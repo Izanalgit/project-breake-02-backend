@@ -1,0 +1,50 @@
+const mongoose = require('mongoose');
+
+const productSchema = new mongoose.Schema({
+    name : {
+        type:String,
+        required:[true, 'Product name is required'],
+    },
+    description : {
+        type:String,
+    },
+    image : {
+        type:String,
+    },
+    category : {
+        type:String,
+        required:[true, 'Category of product is required'],
+        enum : {
+            values : [
+                'Camisetas',
+                'Pantalones',
+                'Zapatos',
+                'Accesorios'
+            ],
+            message : '{VALUE} is not available'
+        }
+    },
+    size : {
+        type:String,
+        required:[true, 'Size of product is required'],
+        enum : {
+            values : [
+                'XS',
+                'S',
+                'M',
+                'LS',
+                'XL'
+            ],
+            message : '{VALUE} is not available'
+        }
+    },
+    price : {
+        type:Number,
+        required:[true, 'Product price is required'],
+    }
+
+})
+
+const Product = mongoose.model('Product',productSchema);
+
+module.exports = Product;
