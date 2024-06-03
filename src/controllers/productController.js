@@ -171,7 +171,7 @@ async function deleteProduct(req,res) {
         console.error('DB-DELETE PRODUCT ERROR : ',err);
         return res
             .status(400)
-            .send('<h1>Error:  parece el id es incorrecto.</h1>');
+            .send('<h1>Error: parece que el id es incorrecto.</h1>');
     }
 
     res.redirect(`/dashboard`);
@@ -266,7 +266,7 @@ function getProductDetails(product,admin){
 
     html += '</main>';
     return html;
-  }
+}
 // - - - - - - - - - PRODUCT CARDS ON MAIN - - - - - - - - - 
 function getProductCards(products,admin) {
     let adminDetails = '';
@@ -299,8 +299,7 @@ function getProductCards(products,admin) {
 
     html += '</main>';
     return html;
-  }
-
+}
 // - - - - - - - - - CREATE FORM - - - - - - - - - 
 function getCreateForm(){
     const html = `

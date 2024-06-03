@@ -34,3 +34,6 @@ app.use('/marco',(req,res)=>res.send('<h2>polo</h2>'));
 
 
 app.listen(PORT, ()=>console.log(`Server on port : http://localhost:${PORT}`));
+
+
+module.exports = app;

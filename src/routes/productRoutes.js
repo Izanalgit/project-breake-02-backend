@@ -15,19 +15,39 @@ router.get('/products/:productId',product.showProductById);
 //Admon dashboard view (AUTH MIDDELWARE)
 
 //Show all products (with admin controls)
-router.get('/dashboard',product.showProducts);
+router.get(
+    '/dashboard',
+    product.showProducts);
+
 //Trow create product form
-router.get('/dashboard/new',product.showNewProduct);
+router.get(
+    '/dashboard/new',
+    product.showNewProduct);
+
 //Create new product
-router.post('/dashboard',product.createProduct);
+router.post(
+    '/dashboard',
+    product.createProduct);
+
 //Show a detailed product (with admin controls)
-router.get('/dashboard/:productId',product.showProductById);
+router.get(
+    '/dashboard/:productId',
+    product.showProductById);
+
 //Trow update product form
-router.get('/dashboard/:productId/edit',product.showEditProduct);
+router.get(
+    '/dashboard/:productId/edit',
+    product.showEditProduct);
+
 //Update a product
-router.put('/dashboard/:productId',product.updateProduct);
+router.put(
+    '/dashboard/:productId',
+    product.updateProduct);
+
 //Delete a product
-router.delete('/dashboard/:productId/delete',product.deleteProduct);
+router.delete(
+    '/dashboard/:productId/delete',
+    product.deleteProduct);
 
 
 module.exports=router;
