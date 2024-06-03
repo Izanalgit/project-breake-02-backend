@@ -1,4 +1,5 @@
 const express = require('express');
+const methodOverride = require('method-override');
 const dbConecction = require('./config/db');
 
 require('dotenv').config();
@@ -10,8 +11,19 @@ const PORT = process.env.PORT || 8080;
 dbConecction();
 
 //Root middlewares
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({extended:false}));//Set flase for method-override
 app.use(express.json());
+
+//Methods forms middleware(methodOverride docs)
+app.use(
+    methodOverride((req, res)=>{
+        if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+            let method = req.body._method
+            delete req.body._method
+            return method
+        }
+    })
+)
 
 //Routes
 app.use('/',require('./routes/productRoutes'));

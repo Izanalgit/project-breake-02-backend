@@ -3,7 +3,7 @@ const Product = require('../models/Product');
 
 // - - - - - - - - - SHOW PRODUCTS - - - - - - - - - 
 async function showProducts (req,res) {
-
+    //Check if admin miss !!!
     let products;
 
     try{
@@ -18,14 +18,14 @@ async function showProducts (req,res) {
     const html = 
         baseHtmlHead() + 
         getNavBar() + 
-        getProductCards(products) + 
+        getProductCards(products,true) + 
         baseHtmlFoot();
 
     res.status(200).send(html);
 }
 // - - - - - - - - - SHOW PRODUCT BY ID - - - - - - - - - 
 async function showProductById(req,res) {
-    
+    //Check if admin miss !!!
     const prodId = req.params.productId;
     let product;
 
@@ -40,7 +40,7 @@ async function showProductById(req,res) {
 
     const html = 
         baseHtmlHead() + 
-        getProductDetails(product) + 
+        getProductDetails(product,true) + 
         baseHtmlFoot();
 
     res.status(200).send(html);
@@ -59,8 +59,6 @@ async function createProduct(req,res) {
 
     const nProBod = req.body;
     let product;
-
-    console.log(nProBod)
 
     const imgname = nProBod.name.trim()
     const imgProd= `./public/images/${imgname}.jpg`;
@@ -103,21 +101,80 @@ async function createProduct(req,res) {
 }
 // - - - - - - - - - FORM UPDATE PRODUCT - - - - - - - - - 
 async function showEditProduct(req,res) {
-    const html = '<p>nice</p>';
+
+    const prodId = req.params.productId;
+    let product;
+
+    try{
+        product = await Product.findById(prodId);
+    }catch (err){
+        console.error('DB-FIND PRODUCT BY ID ERROR : ',err);
+        return res
+            .status(400)
+            .send('<h1>Error:  parece que esa ID no es válida.</h1>');
+    }
+
+    const html = 
+        baseHtmlHead() + 
+        getUpdateForm(product,prodId) + 
+        baseHtmlFoot();
 
     res.status(200).send(html);
 }
 // - - - - - - - - - UPDATE PRODUCT  - - - - - - - - - 
 async function updateProduct(req,res) {
-    const html = '<p>nice</p>';
 
-    res.status(200).send(html);
+    let product;
+    const prod = req.body;
+    const id = req.params.productId;
+
+    const sizes = [];
+
+    const sizeXS = prod.sizeXS || '';
+    const sizeS = prod.sizeS || '';
+    const sizeM = prod.sizeM || '';
+    const sizeLS = prod.sizeLS || '';
+    const sizeXL = prod.sizeXL || '';
+
+    if(sizeXS)sizes.push(sizeXS);
+    if(sizeS)sizes.push(sizeS);
+    if(sizeM)sizes.push(sizeM);
+    if(sizeLS)sizes.push(sizeLS);
+    if(sizeXL)sizes.push(sizeXL);
+
+    const updProduct = {
+        name:prod.name,
+        description:prod.description,
+        category:prod.category,
+        size:sizes,
+        price:prod.price,
+    }
+
+    try{
+        product = await Product.findByIdAndUpdate(id,updProduct,{new:true});
+    }catch (err){
+        console.error('DB-UPDATE PRODUCT ERROR : ',err);
+        return res
+            .status(400)
+            .send('<h1>Error:  parece que hay campos incorrectos.</h1>');
+    }
+
+    res.redirect(`/dashboard/${product._id}`);
 }
 // - - - - - - - - - DELETE PRODUCT - - - - - - - - - 
 async function deleteProduct(req,res) {
-    const html = '<p>nice</p>';
+    const id = req.params.productId;
 
-    res.status(200).send(html);
+    try{
+        await Product.findByIdAndDelete(id);
+    }catch (err){
+        console.error('DB-DELETE PRODUCT ERROR : ',err);
+        return res
+            .status(400)
+            .send('<h1>Error:  parece el id es incorrecto.</h1>');
+    }
+
+    res.redirect(`/dashboard`);
 }
 
 module.exports={
@@ -185,14 +242,20 @@ function getProductDetails(product,admin){
         
     if(admin)
         adminDetails=`
-            <a href="/dashboard/${product._id}">Modificar</a>
-            <a href="/dashboard/${product._id}/delete">Eliminar</a>    
+            <button onclick="location.href='/dashboard/${product._id}/edit';">
+                Modificar
+            </button>
+            <form action="/dashboard/${product._id}/delete" method="POST">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="submit" value="Eliminar">
+            </form>   
         `;
 
     html += `
         <div class="product-detaill">
         <img src="${product.image}" alt="${product.name}">
         <h2>${product.name}</h2>
+        <h3>${product.category}</h3>
         <p>${product.price}€</p>
         <p>${product.description}</p>
         <p>${sizesDom}</p>
@@ -211,10 +274,15 @@ function getProductCards(products,admin) {
 
     for (let product of products) {
         
-        if(admin)// NOT DELETE -> it shoudnt work :/
+        if(admin)
             adminDetails=`
-                <a href="/dashboard/${product._id}">Modificar</a> 
-                <a href="/dashboard/${product._id}/delete">Eliminar</a>    
+                <button onclick="location.href='/dashboard/${product._id}/edit';">
+                    Modificar
+                </button>
+                <form action="/dashboard/${product._id}/delete" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="submit" value="Eliminar">
+                </form>   
             `;
 
         html += `
@@ -266,11 +334,62 @@ function getCreateForm(){
             <label for="sizeXL"> XL</label><br>
 
             <label for="price">Precio :</label>
-            <input type="number" id="price" name="price" min="0.01" required>
+            <input type="number" id="price" name="price"required>
 
             <br>
             
             <input type="submit" value="Crear">
+        </form>
+    `;
+    
+    return html;
+}
+// - - - - - - - - - UPDATE FORM - - - - - - - - - 
+function getUpdateForm(product,id){
+    let XS,S,M,LS,XL = '';
+    if(product.size.includes('XS'))XS = 'checked';
+    if(product.size.includes('S'))S = 'checked';
+    if(product.size.includes('M'))M = 'checked';
+    if(product.size.includes('LS'))LS = 'checked';
+    if(product.size.includes('XL'))XL = 'checked';
+
+    const html = `
+        <form action="../${id}" method="post">
+        <input type="hidden" name="_method" value="PUT">
+            <label for="name">Nombre producto :</label><br>
+            <input type="text" id="name" name="name" value="${product.name}" required><br>
+            
+            <label for="description">Descripción :</label><br>
+            <textarea id="description" name="description">
+                ${product.description}
+            </textarea><br>
+            
+            <label for="category">Categoría :</label><br>
+            <input list="category" name="category" value="${product.category}" required>
+            <datalist id="category">
+                <option value="Camisetas">
+                <option value="Pantalones">
+                <option value="Zapatos">
+                <option value="Accesorios">
+            </datalist><br>
+
+            <input type="checkbox" id="sizeXS" name="sizeXS" value="XS" ${XS}>
+            <label for="sizeXS"> XS</label><br>
+            <input type="checkbox" id="sizeS" name="sizeS" value="S" ${S}>
+            <label for="sizeS"> S</label><br>
+            <input type="checkbox" id="sizeM" name="sizeM" value="" ${M}>
+            <label for="sizeM"> M</label><br>
+            <input type="checkbox" id="sizeLS" name="sizeLS" value="LS" ${LS}>
+            <label for="sizeLS"> LS</label><br>
+            <input type="checkbox" id="sizeXL" name="sizeXL" value="XL" ${XL}>
+            <label for="sizeXL"> XL</label><br>
+
+            <label for="price">Precio :</label>
+            <input type="number" id="price" name="price" value="${product.price}" required>
+
+            <br>
+            
+            <input type="submit" value="Actualizar">
         </form>
     `;
     
