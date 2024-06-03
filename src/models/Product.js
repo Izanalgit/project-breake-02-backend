@@ -24,9 +24,9 @@ const productSchema = new mongoose.Schema({
             message : '{VALUE} is not available'
         }
     },
-    size : {
+    size : [{
         type:String,
-        required:[true, 'Size of product is required'],
+        required:[true, 'At least one size of product is required'],
         enum : {
             values : [
                 'XS',
@@ -37,7 +37,7 @@ const productSchema = new mongoose.Schema({
             ],
             message : '{VALUE} is not available'
         }
-    },
+    }],
     price : {
         type:Number,
         required:[true, 'Product price is required'],

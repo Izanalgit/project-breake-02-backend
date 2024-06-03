@@ -12,7 +12,7 @@ router.get('/products',product.showProducts);
 router.get('/products/:productId',product.showProductById);
 
 
-//Admon dashboard view
+//Admon dashboard view (AUTH MIDDELWARE)
 
 //Show all products (with admin controls)
 router.get('/dashboard',product.showProducts);
