@@ -1,6 +1,8 @@
 const express = require('express');
 const methodOverride = require('method-override');
 const dbConecction = require('./config/db');
+const swaggerUI = require('swagger-ui-express');
+const docs = require('./docs/index');
 
 require('dotenv').config();
 
@@ -29,9 +31,9 @@ app.use(
 app.use('/',require('./routes/productRoutes'));
 // app.use('/auth',require('./routes/authRoutes'));
 
-//Health (marco polo es epico ahora que viene el verano y lo sabeis)
+//Health & Documentation (marco polo es epico ahora que viene el verano y lo sabeis)
 app.use('/marco',(req,res)=>res.send('<h2>polo</h2>'));
-
+app.use('/api-docs', swaggerUI.serve,swaggerUI.setup(docs));
 
 app.listen(PORT, ()=>console.log(`Server on port : http://localhost:${PORT}`));
 

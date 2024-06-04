@@ -37,6 +37,9 @@ async function showProductById(req,res) {
             .status(400)
             .send('<h1>Error:  parece que esa ID no es válida.</h1>');
     }
+    if(!product) return res
+        .status(400)
+        .send('<h1>Error:  parece que esa ID no es válida.</h1>');
 
     const html = 
         baseHtmlHead() + 
@@ -113,6 +116,9 @@ async function showEditProduct(req,res) {
             .status(400)
             .send('<h1>Error:  parece que esa ID no es válida.</h1>');
     }
+    if(!product) return res
+        .status(400)
+        .send('<h1>Error:  parece que esa ID no es válida.</h1>');
 
     const html = 
         baseHtmlHead() + 
@@ -158,21 +164,28 @@ async function updateProduct(req,res) {
             .status(400)
             .send('<h1>Error:  parece que hay campos incorrectos.</h1>');
     }
+    if(!product) return res
+        .status(400)
+        .send('<h1>Error:  parece que esa ID no es válida.</h1>');
 
     res.redirect(`/dashboard/${product._id}`);
 }
 // - - - - - - - - - DELETE PRODUCT - - - - - - - - - 
 async function deleteProduct(req,res) {
     const id = req.params.productId;
+    let product;
 
     try{
-        await Product.findByIdAndDelete(id);
+        product = await Product.findByIdAndDelete(id);
     }catch (err){
         console.error('DB-DELETE PRODUCT ERROR : ',err);
         return res
             .status(400)
-            .send('<h1>Error: parece que el id es incorrecto.</h1>');
+            .send('<h1>Error: parece que esa ID no es válida.</h1>');
     }
+    if(!product) return res
+        .status(400)
+        .send('<h1>Error:  parece que esa ID no es válida.</h1>');
 
     res.redirect(`/dashboard`);
 }
