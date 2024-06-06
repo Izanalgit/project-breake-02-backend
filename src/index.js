@@ -17,7 +17,7 @@ dbConecction();
 //Root middlewares
 app.use(express.urlencoded({extended:false}));//Set flase for method-override
 app.use(express.json());
-app.use(express.static('../public'));//needs config !!!!!
+app.use(express.static(__dirname + '/../public'));
 
 //Methods forms middleware(methodOverride docs)
 app.use(

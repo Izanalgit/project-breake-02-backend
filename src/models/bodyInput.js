@@ -65,5 +65,30 @@ const categoryValidation = [
     query('cat').custom(validCatergoy),
 ]
 
+const adminValidations = [
+	body('name')
+        .trim()
+        .notEmpty()
+        .withMessage('Nombre de administrador necesario')
+        .isLength({ max: 15})
+		.withMessage('El nombre no debe ser más largo de 15 carácteres'),
+	body('pswd')
+        .trim()
+        .notEmpty()
+		.withMessage('Contraseña requerida')
+        .isStrongPassword({
+            minLength: 8,
+            minLowercase: 1,
+            minUppercase: 1,
+            minNumbers: 1,
+            minSymbols: 1,
+          })
+        .withMessage('Debe ser una contraseña fuerte'),
+]
 
-module.exports = {inputValidations,categoryValidation}
+
+module.exports = {
+    inputValidations,
+    categoryValidation,
+    adminValidations
+}

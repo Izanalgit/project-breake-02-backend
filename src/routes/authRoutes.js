@@ -1,6 +1,8 @@
 const express = require('express');
 const adminDoor = require('../controllers/authController');
 const {verifyToken} = require('../middlewares/authMiddleware');
+const {validate} = require('../middlewares/validator');
+const {adminValidations} = require('../models/bodyInput');
 
 const router = express.Router();
 
@@ -26,6 +28,8 @@ router.get(
 //action
 router.post(
     '/regis',
+    adminValidations,
+    validate,
     adminDoor.regisAdmin);
 
 

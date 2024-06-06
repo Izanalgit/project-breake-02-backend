@@ -83,7 +83,7 @@ async function createProduct(req,res) {
     let product;
 
     const imgname = nProBod.name.trim()
-    const imgProd= `./public/images/${imgname}.jpg`;
+    const imgProd= `./images/${imgname}.jpg`;
 
 
     const sizes = [];
@@ -230,15 +230,15 @@ function baseHtmlHead(){
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link rel="icon" type="image/x-icon" href="./public/images/favicon.ico">
-            <link rel="stylesheet" href="/public/normalize.css">
-            <link rel="stylesheet" href="/public/style.css">
+            <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+            <link rel="stylesheet" href="/normalize.css">
+            <link rel="stylesheet" href="/styles.css">
             <title>Ropa epica</title>
         </head>
-        <header>
-            <h1>Catálogo epico</h1>
-        </header>
-        <body>    
+        <body>
+            <div id="header"> 
+                <h1>Catálogo epico</h1>
+            </div>  
     `;
     
     return html;
