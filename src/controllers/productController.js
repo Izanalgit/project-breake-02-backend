@@ -3,11 +3,14 @@ const Product = require('../models/Product');
 
 // - - - - - - - - - SHOW PRODUCTS - - - - - - - - - 
 async function showProducts (req,res) {
+
+    const cat = req.query.cat;
     //Check if admin miss !!!
     let products;
 
     try{
-        products = await Product.find();
+        if(cat) products = await Product.find({category:cat});
+        else products = await Product.find();
     }catch (err){
         console.error('DB-FIND PRODUCTS ERROR : ',err);
         return res
@@ -17,7 +20,7 @@ async function showProducts (req,res) {
 
     const html = 
         baseHtmlHead() + 
-        getNavBar() + 
+        getNavBar("dashboard") + 
         getProductCards(products,true) + 
         baseHtmlFoot();
 
@@ -34,8 +37,8 @@ async function showProductById(req,res) {
     }catch (err){
         console.error('DB-FIND PRODUCT BY ID ERROR : ',err);
         return res
-            .status(400)
-            .send('<h1>Error:  parece que esa ID no es válida.</h1>');
+            .status(500)
+            .send('<h1>Ups! algo pasa con el servidor, espere unos minutos porfavor.');
     }
     if(!product) return res
         .status(400)
@@ -43,6 +46,7 @@ async function showProductById(req,res) {
 
     const html = 
         baseHtmlHead() + 
+        getNavBar("dashboard") +
         getProductDetails(product,true) + 
         baseHtmlFoot();
 
@@ -96,8 +100,8 @@ async function createProduct(req,res) {
     }catch (err){
         console.error('DB-CREATE PRODUCT ERROR : ',err);
         return res
-            .status(400)
-            .send('<h1>Error:  parece que hay campos incorrectos.</h1>');
+            .status(500)
+            .send('<h1>Ups! algo pasa con el servidor, espere unos minutos porfavor.');
     }
 
     res.redirect(`./dashboard/${product._id}`);
@@ -161,8 +165,8 @@ async function updateProduct(req,res) {
     }catch (err){
         console.error('DB-UPDATE PRODUCT ERROR : ',err);
         return res
-            .status(400)
-            .send('<h1>Error:  parece que hay campos incorrectos.</h1>');
+            .status(500)
+            .send('<h1>Ups! algo pasa con el servidor, espere unos minutos porfavor.');
     }
     if(!product) return res
         .status(400)
@@ -180,8 +184,8 @@ async function deleteProduct(req,res) {
     }catch (err){
         console.error('DB-DELETE PRODUCT ERROR : ',err);
         return res
-            .status(400)
-            .send('<h1>Error: parece que esa ID no es válida.</h1>');
+            .status(500)
+            .send('<h1>Ups! algo pasa con el servidor, espere unos minutos porfavor.');
     }
     if(!product) return res
         .status(400)
@@ -212,8 +216,8 @@ function baseHtmlHead(){
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <link rel="icon" type="image/x-icon" href="./public/images/favicon.ico">
-            <link rel="stylesheet" href="./public/normalize.css">
-            <link rel="stylesheet" href="./public/style.css">
+            <link rel="stylesheet" href="/public/normalize.css">
+            <link rel="stylesheet" href="/public/style.css">
             <title>Ropa epica</title>
         </head>
         <header>
@@ -234,12 +238,21 @@ function baseHtmlFoot(){
     return html;
 }
 // - - - - - - - - - NAVEGATION BAR - - - - - - - - - 
-function getNavBar(){
-    let html = '<nav>'
-    
-    html += '<h2>aqui va el navbar, con script? valor hidden en las cards de categoria/button onclick forif categoria</h2>'
+function getNavBar(route){
+    let createProd='';
+    if(route==='dashboard') 
+        createProd = '<a href="/dashboard/new">CREAR</a>';
 
-    html += '</nav>'
+    let html = ` 
+        <nav>
+            <a href="/${route}/?cat=Camisetas">Camisetas</a>
+            <a href="/${route}/?cat=Pantalones">Pantalones</a>
+            <a href="/${route}/?cat=Zapatos">Zapatos</a>
+            <a href="/${route}/?cat=Accesorios">Accesorios</a>
+            ${createProd}
+            <a href="/${route}">HOME</a>
+        </nav>
+    `;
     return html;
 }
 // - - - - - - - - - PRODUCT DETAILS ON MAIN - - - - - - - - - 

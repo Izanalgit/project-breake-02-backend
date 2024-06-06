@@ -1,5 +1,7 @@
 const express = require('express');
 const product = require('../controllers/productController');
+const {validate} = require('../middlewares/validator');
+const {inputValidations,categoryValidation} = require('../models/bodyInput');
 
 const router = express.Router();
 
@@ -7,7 +9,11 @@ const router = express.Router();
 //Main view
 
 //Show all products
-router.get('/products',product.showProducts);
+router.get(
+    '/products',
+    categoryValidation,
+    validate,
+    product.showProducts);
 //Show a detailed product
 router.get('/products/:productId',product.showProductById);
 
@@ -17,6 +23,8 @@ router.get('/products/:productId',product.showProductById);
 //Show all products (with admin controls)
 router.get(
     '/dashboard',
+    categoryValidation,
+    validate,
     product.showProducts);
 
 //Trow create product form
@@ -27,6 +35,8 @@ router.get(
 //Create new product
 router.post(
     '/dashboard',
+    inputValidations,
+    validate,
     product.createProduct);
 
 //Show a detailed product (with admin controls)
@@ -42,6 +52,8 @@ router.get(
 //Update a product
 router.put(
     '/dashboard/:productId',
+    inputValidations,
+    validate,
     product.updateProduct);
 
 //Delete a product

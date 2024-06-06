@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-require('dotenv').config();
 
 const BD = process.env.MONGO_BBDD || 'local-pb2-products';
 const URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/';
