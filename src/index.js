@@ -5,6 +5,8 @@ const methodOverride = require('method-override');
 const dbConecction = require('./config/db');
 const swaggerUI = require('swagger-ui-express');
 const docs = require('./docs/index');
+const {createSession} = require('./middlewares/authMiddleware');
+const session = require('express-session');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -28,9 +30,12 @@ app.use(
     })
 )
 
+//Session init
+app.use(session(createSession()));
+
 //Routes
 app.use('/',require('./routes/productRoutes'));
-// app.use('/auth',require('./routes/authRoutes'));
+app.use('/auth',require('./routes/authRoutes'));
 
 //Health & Documentation (marco polo es epico ahora que viene el verano y lo sabeis)
 app.use('/marco',(req,res)=>res.status(200).send('<h2>polo</h2>'));

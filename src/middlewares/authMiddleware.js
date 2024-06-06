@@ -1,34 +1,49 @@
 const jwt = require('jsonwebtoken');
+const Admin = require('../models/Admin');
 
 const secret = process.env.SECRET;
 
+//Session config
 const createSession= ()=>{
     return{
       secret: secret,
       resave: false,
       saveUninitialized: true,
+      cookie: {secure: false} //Free services dont accept encrypted cookies? ):
     }
 }
 
+//Token generator
 function generateToken(id) {
     return jwt.sign({id}, secret, { expiresIn: '1h' });
 }
 
-function verifyToken(req, res, next) {
+//Token middleware
+async function verifyToken(req, res, next) {
   const token = req.session.token;
 
   if (!token) {
-    return res.status(401).json({ message: 'Token no proporcionado' });
+    return res.status(401).send('<h1>Error de autentificación.</h1>');
   }
 
   jwt.verify(token, secret, (err, decoded) => {
     if (err) {
       return res
-        .status(401)
-        .json({ message: 'Token inválido', error: err.message });
+        .redirect('/login');
     }
 
-    req.id = decoded.id;
+    const admin = Admin.findById(decoded.id)
+        .then(adm=>adm)
+        .catch(()=>{
+            return res
+                .status(500)
+                .send('<h1>Ups! algo pasa con la base de datos de administradores.</h1>');
+        })
+
+    admin?
+        req.admin = true:
+        req.admin = false;
+
     next();
   });
 }

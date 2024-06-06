@@ -5,7 +5,7 @@ const Product = require('../models/Product');
 async function showProducts (req,res) {
 
     const cat = req.query.cat;
-    //Check if admin miss !!!
+
     let products;
 
     try{
@@ -18,17 +18,24 @@ async function showProducts (req,res) {
             .send('<h1>Ups! algo pasa con el servidor, espere unos minutos porfavor.');
     }
 
-    const html = 
+    let html;
+
+    if(req.admin) html = 
         baseHtmlHead() + 
         getNavBar("dashboard") + 
         getProductCards(products,true) + 
+        baseHtmlFoot();
+    else html = 
+        baseHtmlHead() + 
+        getNavBar("products") + 
+        getProductCards(products) + 
         baseHtmlFoot();
 
     res.status(200).send(html);
 }
 // - - - - - - - - - SHOW PRODUCT BY ID - - - - - - - - - 
 async function showProductById(req,res) {
-    //Check if admin miss !!!
+
     const prodId = req.params.productId;
     let product;
 
@@ -44,11 +51,19 @@ async function showProductById(req,res) {
         .status(400)
         .send('<h1>Error:  parece que esa ID no es válida.</h1>');
 
-    const html = 
+    let html;
+
+    if(req.admin) html = 
         baseHtmlHead() + 
         getNavBar("dashboard") +
         getProductDetails(product,true) + 
         baseHtmlFoot();
+    else html = 
+        baseHtmlHead() + 
+        getNavBar("products") +
+        getProductDetails(product) + 
+        baseHtmlFoot();
+
 
     res.status(200).send(html);
 }
@@ -241,7 +256,10 @@ function baseHtmlFoot(){
 function getNavBar(route){
     let createProd='';
     if(route==='dashboard') 
-        createProd = '<a href="/dashboard/new">CREAR</a>';
+        createProd = `
+            <a href="/auth/logout">LOGOUT</a>
+            <a href="/dashboard/new">CREAR</a>
+        `;
 
     let html = ` 
         <nav>
@@ -249,13 +267,14 @@ function getNavBar(route){
             <a href="/${route}/?cat=Pantalones">Pantalones</a>
             <a href="/${route}/?cat=Zapatos">Zapatos</a>
             <a href="/${route}/?cat=Accesorios">Accesorios</a>
+            <a href="/auth/login">LOGIN</a>
             ${createProd}
             <a href="/${route}">HOME</a>
         </nav>
     `;
     return html;
 }
-// - - - - - - - - - PRODUCT DETAILS ON MAIN - - - - - - - - - 
+// - - - - - - - - - PRODUCT DETAILS - - - - - - - - - 
 function getProductDetails(product,admin){
     let adminDetails = '';
     let html = '<main>';
@@ -293,14 +312,16 @@ function getProductDetails(product,admin){
     html += '</main>';
     return html;
 }
-// - - - - - - - - - PRODUCT CARDS ON MAIN - - - - - - - - - 
+// - - - - - - - - - PRODUCT CARDS - - - - - - - - - 
 function getProductCards(products,admin) {
     let adminDetails = '';
+    let details = 'products';
     let html = '<main>';
 
     for (let product of products) {
         
-        if(admin)
+        if(admin){
+            details = 'dashboard';
             adminDetails=`
                 <button onclick="location.href='/dashboard/${product._id}/edit';">
                     Modificar
@@ -310,6 +331,7 @@ function getProductCards(products,admin) {
                     <input type="submit" value="Eliminar">
                 </form>   
             `;
+        }
 
         html += `
             <div class="product-card">
@@ -317,7 +339,7 @@ function getProductCards(products,admin) {
             <h2>${product.name}</h2>
             <p>${product.description}</p>
             <p>${product.price}€</p>
-            <a href="/products/${product._id}">Ver detalle</a>
+            <a href="/${details}/${product._id}">Ver detalle</a>
             ${adminDetails}
             </div>
         `;
