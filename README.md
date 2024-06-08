@@ -41,7 +41,7 @@ For dev deploy on local server:
   * GET /dashboard/:productId/edit: Trows update product form with previous values on default.
   * PUT /dashboard/:productId: Updates product by object on request body.
   + DELETE /dashboard/:productId/delete: Updates product by id on request parameter.
-  
+
 + Auth end points:
   - GET /auth/login: Trows admin login form.
   * POST /auth/login: Logs in admin acout by object on request body with session.
@@ -54,6 +54,8 @@ For dev deploy on local server:
 This API is feed with MongoDB on Atlas service with mongoose modules. Theres a local default configuration for dev but requires enviorement value for Atlas URI.
 
 DB configuration on `/src/config` 
+
+DB models of admin user and product on `/src/models` 
 
 ## Validations
 

@@ -52,6 +52,8 @@ const inputValidations = [
         .trim()
         .notEmpty()
         .withMessage('El producto necesita un precio.')
+        .isFloat({min:0})
+        .withMessage('El precio no puede ser negativo.')
         .isDecimal({decimal_digits:2})
         .withMessage('El precio debe ser un numero con un máximo de 2 decimales.'),
     body('sizeXS').custom(validSize),

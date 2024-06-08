@@ -166,7 +166,7 @@ function getCreateForm(){
             <label for="sizeXL"> XL</label><br>
 
             <label for="price">Precio :</label>
-            <input type="number" id="price" name="price"required>
+            <input type="number" id="price" name="price" step=".01" required>
 
             <br>
             
@@ -217,7 +217,7 @@ function getUpdateForm(product,id){
             <label for="sizeXL"> XL</label><br>
 
             <label for="price">Precio :</label>
-            <input type="number" id="price" name="price" value="${product.price}" required>
+            <input type="number" id="price" name="price" value="${product.price}" step=".01" required>
 
             <br>
             

@@ -41,7 +41,7 @@ async function loginAdmin (req,res){
 // - - - - - - - - - REGISTER FORM - - - - - - - - - 
 function regisForm (req,res){
     const regisForm = `
-        <form action="/auth/regis" method="post">
+        <form class="formAdmin" action="/auth/regis" method="post">
             <label for="adminname">Nombre:</label>
             <input type="text" id="adminname" name="adminname" required><br>
         
