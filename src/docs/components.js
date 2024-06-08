@@ -48,6 +48,21 @@ module.exports = {
                 description:"An id of a product",
                 example: "6301064b0028de7866e2b2c4"
             },
+            Admin:{
+                type:'object',
+                properties:{
+                    adminname:{
+                        type:'string',
+                        description:"Admin name",
+                        example:"Admin1"
+                    },
+                    password:{
+                        type:'string',
+                        description:"Admin password",
+                        example:"123ABCabc!"
+                    }
+                }
+            },
         }
     }
 }

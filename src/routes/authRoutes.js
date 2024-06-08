@@ -1,11 +1,15 @@
 const express = require('express');
 const adminDoor = require('../controllers/authController');
-const {verifyToken} = require('../middlewares/authMiddleware');
-const {validate} = require('../middlewares/validator');
+const adminDoor_API = require('../controllers-API-REST/authController');
+const {verifyToken,verifyToken_API} = require('../middlewares/authMiddleware');
+const {validate,validate_API_REST} = require('../middlewares/validator');
 const {adminValidations} = require('../models/bodyInput');
 
 const router = express.Router();
+const router_API = express.Router();
 
+
+// - - - - - - - - - - - - - - - - API SSR ROUTER - - - - - - - - - - - - - - - - 
 
 //LOG IN
 
@@ -40,5 +44,25 @@ router.get(
     adminDoor.logout);
 
 
+// - - - - - - - - - - - - - - - - API RES ROUTER - - - - - - - - - - - - - - - - 
 
-module.exports = router;
+//LOG IN
+router_API.post(
+    '/login',
+    adminDoor_API.loginAdmin);
+
+//REGIST
+router_API.post(
+    '/regis',
+    adminValidations,
+    validate_API_REST,
+    adminDoor_API.regisAdmin);
+
+//LOGOUT
+router_API.get(
+    '/logout',
+    verifyToken_API,
+    adminDoor_API.logout);
+
+
+module.exports = {router,router_API};

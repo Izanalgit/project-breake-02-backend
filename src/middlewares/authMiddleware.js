@@ -47,6 +47,37 @@ async function verifyToken(req, res, next) {
     next();
   });
 }
+//Token middleware API REST
+async function verifyToken_API(req, res, next) {
+  const token = req.session.token;
+
+  if (!token) {
+    return res.status(401).json({error:'Error de autentificación.'});
+  }
+
+  jwt.verify(token, secret, (err, decoded) => {
+    if (err) {
+      return res
+        .status(400)
+        .json({message:'Ya estás logueado.'});
+    }
+
+    const admin = Admin.findById(decoded.id)
+        .then(adm=>adm)
+        .catch(()=>{
+            return res
+                .status(500)
+                .json({error:'Ups! algo pasa con la base de datos de administradores'});
+        })
+
+    next();
+  });
+}
 
 
-module.exports={createSession,generateToken,verifyToken};
+module.exports={
+  createSession,
+  generateToken,
+  verifyToken,
+  verifyToken_API
+};

@@ -17,4 +17,15 @@ const validate = (req,res,next) => {
     next();
 }
 
-module.exports = {validate}
+const validate_API_REST = (req,res,next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty())
+		return res
+            .status(422)
+            .json({ errors: errors.array()});
+
+	next();
+}
+
+module.exports = {validate,validate_API_REST}

@@ -1,11 +1,15 @@
 const express = require('express');
 const product = require('../controllers/productController');
-const {validate} = require('../middlewares/validator');
+const product_API = require('../controllers-API-REST/productController');
+const {validate,validate_API_REST} = require('../middlewares/validator');
 const {inputValidations,categoryValidation} = require('../models/bodyInput');
-const {verifyToken} = require('../middlewares/authMiddleware');
+const {verifyToken,verifyToken_API} = require('../middlewares/authMiddleware');
 
 const router = express.Router();
+const router_API = express.Router();
 
+
+// - - - - - - - - - - - - - - - - API SSR ROUTER - - - - - - - - - - - - - - - - 
 
 //Main view
 
@@ -73,4 +77,41 @@ router.delete(
     product.deleteProduct);
 
 
-module.exports=router;
+// - - - - - - - - - - - - - - - - API RES ROUTER - - - - - - - - - - - - - - - - 
+
+//Show all products
+router_API.get(
+    '/products',
+    categoryValidation,
+    validate_API_REST,
+    product_API.showProducts);
+
+//Create new product
+router_API.post(
+    '/dashboard',
+    verifyToken_API,
+    inputValidations,
+    validate_API_REST,
+    product_API.createProduct);
+
+//Show a detailed product
+router_API.get(
+    '/products/:productId',
+    product_API.showProductById);
+
+//Update a product
+router_API.put(
+    '/dashboard/:productId',
+    verifyToken_API,
+    inputValidations,
+    validate_API_REST,
+    product_API.updateProduct);
+
+//Delete a product
+router_API.delete(
+    '/dashboard/:productId/delete',
+    verifyToken_API,
+    product_API.deleteProduct);
+
+
+module.exports={router,router_API};

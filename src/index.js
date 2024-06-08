@@ -34,8 +34,12 @@ app.use(
 app.use(session(createSession()));
 
 //Routes
-app.use('/',require('./routes/productRoutes'));
-app.use('/auth',require('./routes/authRoutes'));
+app.use('/',require('./routes/productRoutes').router);
+app.use('/auth',require('./routes/authRoutes').router);
+
+//Routes API REST
+app.use('/api',require('./routes/productRoutes').router_API);
+app.use('/api/auth',require('./routes/authRoutes').router_API);
 
 //Health & Documentation (marco polo es epico ahora que viene el verano y lo sabeis)
 app.use('/marco',(req,res)=>res.status(200).send('<h2>polo</h2>'));
