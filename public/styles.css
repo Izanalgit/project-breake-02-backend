@@ -1,0 +1,154 @@
+
+/* - - - - - - - - - - - - - - GENERALS - - - - - - - - - - - - - - */
+
+/* - - - - - - - Links - - - - - - - */
+a{
+    text-decoration: none;
+    color: lightgrey;
+}
+
+/* - - - - - - - Body - - - - - - - */
+body{
+    height: 100%;
+    width: 100%;
+
+}
+
+/* - - - - - - - Header - - - - - - - */
+#header{
+    display: none;
+}
+
+
+/* - - - - - - - Nav Bar - - - - - - - */
+nav{
+height: 2em;
+width: 100%;
+
+display: flex;
+justify-content:center;
+align-items: center;
+
+font-size: large;
+
+background-color: #333333;
+}
+
+nav a{
+    margin: 0 2%;
+}
+/* - - - - - - - Category title - - - - - - - */
+#catTitle{
+    text-align: center;
+}
+
+/* - - - - - - - Main content - - - - - - - */
+main{
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    flex-flow: row, wrap;
+
+    margin: 3%;
+}
+
+/* - - - - - - - - - - - - - - PRODUCTS - - - - - - - - - - - - - - */
+
+/* - - - - - - - Products Cards - - - - - - - */
+.product-card{
+    width: 20em;
+
+    margin: 3%;
+    padding: 3%;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content:center;
+    align-items: center;
+
+    background-color: lightgrey;
+}
+
+.cardButtons{
+    margin: .1em auto;
+    padding: .5em;
+
+    display: block;
+
+    text-align: center;
+
+    color: lightgrey;
+    background-color: dodgerblue;
+
+    border-radius: .3em;
+    border: none;
+}
+/* - - - - - - - Products Details - - - - - - - */
+.product-detaill{
+    width: 20em;
+
+    margin: 0 auto;
+    padding: 5%;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content:center;
+    align-items: center;
+
+    background-color: lightgrey;
+}
+
+/* - - - - - - - Products Images - - - - - - - */
+.product-detaill img,.product-card img{
+    height: auto;
+    max-width: 100%;
+}
+
+/* - - - - - - - - - - - - - - ADMIN FORMS - - - - - - - - - - - - - - */
+.formAdmin{
+    height: auto;
+    width: 50%;
+
+    margin: 3% auto 1%;
+    padding: 1em;
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: #333333;
+    color:dodgerblue;
+
+    border-radius: .2em;
+}
+/* - - - - - - - Buttons - - - - - - - */
+.formAdmin button{
+    width: auto;
+
+    background-color: dodgerblue;;
+    color:lemonchiffon;
+
+    border-radius: .3em;
+    border: none;
+
+    margin: 0 auto;
+}
+/* - - - - - - - To regist link - - - - - - - */
+#regLink{
+    height: auto;
+    width: 50%;
+
+    display: block;
+
+    margin: 0 auto;
+    padding: 1em;
+
+    text-align:center;
+
+    background-color: #333333;
+    color:dodgerblue;
+
+    border-radius: .2em;
+}

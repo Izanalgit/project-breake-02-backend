@@ -1,10 +1,15 @@
 const {generateToken} = require('../middlewares/authMiddleware');
 const Admin = require('../models/Admin');
 
+const {
+    baseHtmlHead,
+    baseHtmlFoot,
+} = require('./ssr')
+
 // - - - - - - - - - LOGIN FORM - - - - - - - - - 
 function loginForm (req,res){
     const loginForm = `
-        <form action="/auth/login" method="post">
+        <form class="formAdmin" action="/auth/login" method="post">
             <label for="adminname">Nombre:</label>
             <input type="text" id="adminname" name="adminname" required><br>
         
@@ -13,11 +18,11 @@ function loginForm (req,res){
     
             <button type="submit">Iniciar sesión</button>
         </form> 
-        <a href="/auth/regis">Ahun no te has registrado?</a>
+        <a id="regLink" href="/auth/regis">Ahun no te has registrado?</a>
     `;
   
     if(req.session.token)res.redirect("/dashboard");
-    else res.send(loginForm);
+    else res.send(baseHtmlHead() + loginForm + baseHtmlFoot());
 };
 // - - - - - - - - - LOGIN ADMIN - - - - - - - - - 
 async function loginAdmin (req,res){
@@ -48,7 +53,7 @@ function regisForm (req,res){
     `;
   
     if(req.session.token)res.redirect("/dashboard");
-    else res.send(regisForm);
+    else res.send(baseHtmlHead() + regisForm + baseHtmlFoot());
 };
 
 // - - - - - - - - - REGISTER ADMIN - - - - - - - - - 
