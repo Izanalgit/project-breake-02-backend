@@ -29,22 +29,25 @@ For dev deploy on local server:
 
 ## End Points
 
-- GET /products: See all products
-+ GET /products/:productId: See product details by id on request parameter.
+- User end points:
+  - GET /products: See all products
+  + GET /products/:productId: See product details by id on request parameter.
 
-- GET /dashboard: Admin dasboard, can se all product plus admin actions like delete or update.
-* GET /dashboard/new: Trows create product form.
-* POST /dashboard: Creates a new product by object on request body.
-* GET /dashboard/:productId: Detailed product by id with admin actions.
-* GET /dashboard/:productId/edit: Trows update product form with previous values on default.
-* PUT /dashboard/:productId: Updates product by object on request body.
-+ DELETE /dashboard/:productId/delete: Updates product by id on request parameter.
-
-- GET /auth/login: Trows admin login form.
-* POST /auth/login: Logs in admin acout by object on request body with session.
-* GET /auth/regis: Trows admin regist form.
-* POST /auth/regis: Regists new admin acout by object on request body.
-+ GET /auth/logut: Logs out admin and deletes session.
+* Admin end points:
+  - GET /dashboard: Admin dasboard, can se all product plus admin actions like delete or update.
+  * GET /dashboard/new: Trows create product form.
+  * POST /dashboard: Creates a new product by object on request body.
+  * GET /dashboard/:productId: Detailed product by id with admin actions.
+  * GET /dashboard/:productId/edit: Trows update product form with previous values on default.
+  * PUT /dashboard/:productId: Updates product by object on request body.
+  + DELETE /dashboard/:productId/delete: Updates product by id on request parameter.
+  
++ Auth end points:
+  - GET /auth/login: Trows admin login form.
+  * POST /auth/login: Logs in admin acout by object on request body with session.
+  * GET /auth/regis: Trows admin regist form.
+  * POST /auth/regis: Regists new admin acout by object on request body.
+  + GET /auth/logut: Logs out admin and deletes session.
 
 ## Data Base
 
