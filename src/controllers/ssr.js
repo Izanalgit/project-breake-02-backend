@@ -32,7 +32,7 @@ function baseHtmlFoot(){
 }
 // - - - - - - - - - NAVEGATION BAR - - - - - - - - - 
 function getNavBar(route,category){
-    let createProd='';
+    let createProd='<a href="/auth/login">LOGIN</a>';
     let catTitle='';
     if(route==='dashboard') 
         createProd = `
@@ -53,7 +53,6 @@ function getNavBar(route,category){
             <a href="/${route}/?cat=Pantalones">Pantalones</a>
             <a href="/${route}/?cat=Zapatos">Zapatos</a>
             <a href="/${route}/?cat=Accesorios">Accesorios</a>
-            <a href="/auth/login">LOGIN</a>
             ${createProd}
             <a href="/${route}">HOME</a>
         </nav>
@@ -77,7 +76,7 @@ function getProductDetails(product,admin){
             <button class="cardButtons" onclick="location.href='/dashboard/${product._id}/edit';">
                 Modificar
             </button>
-            <form action="/dashboard/${product._id}/delete" method="POST">
+            <form onsubmit="return confirm('Seguro que quieres borrarlo?')" action="/dashboard/${product._id}/delete" method="POST">
                 <input type="hidden" name="_method" value="DELETE">
                 <input class="cardButtons" type="submit" value="Eliminar">
             </form>   

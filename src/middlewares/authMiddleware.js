@@ -44,6 +44,8 @@ async function verifyToken(req, res, next) {
         req.admin = true:
         req.admin = false;
 
+        //req.admin = admin? true: false; / req.admin = Boolean(admin) (bien echo)
+
     next();
   });
 }

@@ -68,13 +68,13 @@ const categoryValidation = [
 ]
 
 const adminValidations = [
-	body('name')
+	body('adminname')
         .trim()
         .notEmpty()
         .withMessage('Nombre de administrador necesario')
         .isLength({ max: 15})
 		.withMessage('El nombre no debe ser más largo de 15 carácteres'),
-	body('pswd')
+	body('password')
         .trim()
         .notEmpty()
 		.withMessage('Contraseña requerida')

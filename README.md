@@ -1,10 +1,11 @@
 # Clothes catalogue
 
-Node Express SSR API of clothes catalogue with admin dasboard.
+Node Express SSR API of clothes catalogue with admin dasboard. Made for academic proporsal on bootcamp formation of fullstack developend. With the idea of working out Express Backend with Mongose data base and deploy it with free service like onrender.com .
 
 ## Index
 
-  - [Deploy](#deploy)
+  - [System](#system)
+  - [Installation](#installation)
   - [End Points](#end-points)
   - [Data Base](#data-base)
   - [Validations](#validations)
@@ -13,15 +14,37 @@ Node Express SSR API of clothes catalogue with admin dasboard.
   - [Enviorement values](#enviorement-values)
   - [Modules](#modules)
 
-## Deploy
 
-This API is initialiced with npm, then in order to deploy on console (root directory):
+## System
+
+This API was made with next tools:
+
+  - Node JS v.20.11.0 *
+  - Git  v.2.43.0.windows.1
+  - MongoDB v.7.0.11 *
+  - Visual Studi Code
+
+## Installation
+
+In order to intall the API on local for dev, follow the next git command:
+
+```bash
+  git clone https://github.com/Izanalgit/project-breake-02-backend.git
+```
+
+This API is initialiced with npm (root directory):
+
+```bash
+  npm install
+```
+
+Then in order to start it on console:
 
 ```bash
   npm start
 ```
 
-For dev deploy on local server:
+For dev proporsal on local server:
 
 ```bash
   npm run dev

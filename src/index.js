@@ -45,7 +45,7 @@ app.use('/api/auth',require('./routes/authRoutes').router_API);
 app.use('/marco',(req,res)=>res.status(200).send('<h2>polo</h2>'));
 app.use('/api-docs', swaggerUI.serve,swaggerUI.setup(docs));
 
-app.listen(PORT, ()=>console.log(`Server on port : http://localhost:${PORT}`));
+app.listen(PORT, ()=>console.log(`Server on port : ${PORT}`));
 
 
 module.exports = app;
